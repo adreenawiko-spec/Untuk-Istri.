@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selamat Ulang Tahun Istriku!</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Kotak Kado yang Bisa Disentuh -->
+    <div class="gift-container" id="giftBox" onclick="bukaKado()">
+        <div class="gift-box">
+            <div class="box-lid"></div>
+            <div class="box-body"></div>
+        </div>
+        <p class="instruction">Sentuh kado ini, Sayang... ❤️</p>
+    </div>
+
+    <!-- Konten Kejutan (Muncul Setelah Disentuh) -->
+    <div class="surprise-container hidden" id="surpriseContent">
+        <div class="heart-animation">❤️</div>
+        <h1>Selamat Ulang Tahun, Istriku Tercinta! 💖</h1>
+        
+        <div class="letter">
+            <p>Selamat hari lahir, sayangku. Terima kasih telah menjadi bagian terindah dalam hidupku, menjadi ibu yang hebat, dan istri yang luar biasa.</p>
+            <p>Semoga di usia yang baru ini, kamu selalu diberikan kesehatan, kebahagiaan, dan keberkahan. Aku akan selalu ada di sampingmu untuk mendukung dan mencintaimu.</p>
+            <p>Dengan segenap cinta,</p>
+            <p><strong>— Suamimu</strong></p>
+        </div>
+    </div>
+
+    <script>
+        function bukaKado() {
+            // Sembunyikan kotak kado
+            document.getElementById('giftBox').classList.add('hidden');
+            
+            // Tampilkan kejutan
+            const surprise = document.getElementById('surpriseContent');
+            surprise.classList.remove('hidden');
+            surprise.classList.add('fade-in');
+        }
+    </script>
+</body>
+</html>
