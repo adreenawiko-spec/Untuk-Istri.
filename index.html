@@ -4,41 +4,182 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Selamat Ulang Tahun Istriku!</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: linear-gradient(135deg, #ffe4e1, #ffb6c1);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            color: #4a4a4a;
+            text-align: center;
+            user-select: none;
+        }
+        .hidden { display: none !important; }
+
+        /* Kado Awal */
+        .gift-container { cursor: pointer; }
+        .gift-box {
+            position: relative; width: 120px; height: 120px;
+            background: #ff477e; margin: 0 auto 20px; border-radius: 10px;
+            animation: bounce 1.5s infinite;
+        }
+        .box-lid {
+            position: absolute; width: 130px; height: 25px;
+            background: #ff5c8a; top: -20px; left: -5px; border-radius: 5px;
+        }
+        .instruction { font-size: 1.2rem; font-weight: bold; color: #d147a3; }
+
+        /* Container Slide */
+        .story-container {
+            width: 100%; max-width: 450px; height: 90vh;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative; overflow: hidden;
+            display: flex; flex-direction: column; cursor: pointer;
+        }
+
+        /* Indikator Bar Atas (Model IG) */
+        .progress-bars {
+            display: flex; padding: 15px 10px; gap: 5px; position: absolute;
+            top: 0; width: 100%; z-index: 10;
+        }
+        .bar {
+            height: 4px; flex: 1; background: rgba(0, 0, 0, 0.1);
+            border-radius: 2px; overflow: hidden;
+        }
+        .bar-fill { height: 100%; background: #ff477e; width: 0%; }
+        .bar-fill.active { width: 100%; }
+
+        /* Konten Slide */
+        .slide {
+            flex: 1; display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            padding: 30px; opacity: 0; transform: scale(0.95);
+            transition: all 0.5s ease; position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+        }
+        .slide.current { opacity: 1; transform: scale(1); position: relative; }
+
+        /* Elemen Visual */
+        .slide-emoji { font-size: 4.5rem; margin-bottom: 20px; animation: pulse 1s infinite alternate; }
+        .slide-img {
+            width: 200px; height: 200px; object-fit: cover;
+            border-radius: 50%; border: 5px solid #fff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-bottom: 25px;
+        }
+        h2 { color: #cc0052; font-size: 1.8rem; margin-bottom: 15px; }
+        p { font-size: 1.1rem; line-height: 1.6; color: #555; }
+        
+        .hint {
+            position: absolute; bottom: 20px; font-size: 0.85rem;
+            color: #aaa; width: 100%; left: 0; text-align: center;
+        }
+
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.15); } }
+    </style>
 </head>
 <body>
 
-    <!-- Kotak Kado yang Bisa Disentuh -->
-    <div class="gift-container" id="giftBox" onclick="bukaKado()">
-        <div class="gift-box">
-            <div class="box-lid"></div>
-            <div class="box-body"></div>
-        </div>
-        <p class="instruction">Sentuh kado ini, Sayang... ❤️</p>
+    <!-- HALAMAN 1: KOTAK KADO -->
+    <div class="gift-container" id="giftBox" onclick="mulaiStory()">
+        <div class="gift-box"><div class="box-lid"></div></div>
+        <p class="instruction">Ada kejutan untukmu, istriku.<br>Sentuh kadonya... ❤️</p>
     </div>
 
-    <!-- Konten Kejutan (Muncul Setelah Disentuh) -->
-    <div class="surprise-container hidden" id="surpriseContent">
-        <div class="heart-animation">❤️</div>
-        <h1>Selamat Ulang Tahun, Istriku Tercinta! 💖</h1>
-        
-        <div class="letter">
-            <p>Selamat hari lahir, sayangku. Terima kasih telah menjadi bagian terindah dalam hidupku, menjadi ibu yang hebat, dan istri yang luar biasa.</p>
-            <p>Semoga di usia yang baru ini, kamu selalu diberikan kesehatan, kebahagiaan, dan keberkahan. Aku akan selalu ada di sampingmu untuk mendukung dan mencintaimu.</p>
-            <p>Dengan segenap cinta,</p>
-            <p><strong>— Suamimu</strong></p>
+    <!-- HALAMAN 2: SLIDE INTERAKTIF (IG STORY STYLE) -->
+    <div class="story-container hidden" id="storyContainer" onclick="nextSlide()">
+        <!-- Bar Progres Atas -->
+        <div class="progress-bars" id="progressBars"></div>
+
+        <!-- ISI SLIDE (Bisa ditambah/ubah teks & fotonya) -->
+        <div class="slide current">
+            <div class="slide-emoji">🎂</div>
+            <h2>Selamat Ulang Tahun!</h2>
+            <p>Hari ini adalah hari yang sangat spesial karena wanita terhebat di hidupku dilahirkan ke dunia.</p>
+            <div class="hint">Sentuh layar untuk lanjut...</div>
+        </div>
+
+        <div class="slide">
+            <!-- Ganti teks src dengan link foto istri Anda jika ada -->
+            <img class="slide-img" src="https://www.facebook.com/share/14gyhh4x5PA/" alt="Foto">
+            <h2>Bidadari Surgaku ✨</h2>
+            <p>Terima kasih sudah menjadi istri yang penyabar, ibu yang luar biasa, dan sandaran terbaik dalam suka maupun duka.</p>
+            <div class="hint">Sentuh layar untuk lanjut...</div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-emoji">💖</div>
+            <h2>Doa Tulusku Untukmu</h2>
+            <p>Semoga Allah selalu menjaga kesehatanmu, mempermudah urusanmu, dan memberkahi sisa usia yang kamu miliki.</p>
+            <div class="hint">Sentuh layar untuk lanjut...</div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-emoji">🌹</div>
+            <h2>Janji Setiaku</h2>
+            <p>Aku akan selalu berusaha menjadi suami yang membimbingmu, menjagamu, dan mencintaimu lebih banyak setiap harinya.</p>
+            <div class="hint">Sentuh layar untuk lanjut...</div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-emoji">👩‍❤️‍👨</div>
+            <h2>I Love You Forever</h2>
+            <p>Selamat menempuh usia baru, Sayang. Mari menua bersama dalam cinta dan ketaatan kepada-Nya. <br><br><strong>— Suamimu</strong></p>
         </div>
     </div>
 
     <script>
-        function bukaKado() {
-            // Sembunyikan kotak kado
+        let currentIdx = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        // Membuat bar indikator atas otomatis sesuai jumlah slide
+        const pbContainer = document.getElementById('progressBars');
+        for (let i = 0; i < totalSlides; i++) {
+            const bar = document.createElement('div');
+            bar.className = 'bar';
+            const fill = document.createElement('div');
+            fill.className = 'bar-fill';
+            if (i === 0) fill.classList.add('active');
+            bar.appendChild(fill);
+            pbContainer.appendChild(bar);
+        }
+        const fills = document.querySelectorAll('.bar-fill');
+
+        function mulaiStory() {
             document.getElementById('giftBox').classList.add('hidden');
-            
-            // Tampilkan kejutan
-            const surprise = document.getElementById('surpriseContent');
-            surprise.classList.remove('hidden');
-            surprise.classList.add('fade-in');
+            document.getElementById('storyContainer').classList.remove('hidden');
+            updateBars();
+        }
+
+        function nextSlide() {
+            if (currentIdx < totalSlides - 1) {
+                slides[currentIdx].classList.remove('current');
+                currentIdx++;
+                slides[currentIdx].classList.add('current');
+                updateBars();
+            } else {
+                // Jika sudah slide terakhir, balik ke slide pertama
+                slides[currentIdx].classList.remove('current');
+                currentIdx = 0;
+                slides[currentIdx].classList.add('current');
+                updateBars();
+            }
+        }
+
+        function updateBars() {
+            fills.forEach((fill, idx) => {
+                if (idx <= currentIdx) {
+                    fill.classList.add('active');
+                } else {
+                    fill.classList.remove('active');
+                }
+            });
         }
     </script>
 </body>
