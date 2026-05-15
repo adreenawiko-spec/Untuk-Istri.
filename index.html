@@ -85,6 +85,12 @@
 </head>
 <body>
 
+    <!-- AUDIO BACKSOUND -->
+    <!-- Lagu instrumen piano romantis (Bisa diganti tautan MP3 lain pada src) -->
+    <audio id="romanticMusic" loop>
+        <source src="soundhelix.com" type="audio/mpeg">
+    </audio>
+
     <!-- HALAMAN 1: KOTAK KADO -->
     <div class="gift-container" id="giftBox" onclick="mulaiStory()">
         <div class="gift-box"><div class="box-lid"></div></div>
@@ -96,7 +102,7 @@
         <!-- Bar Progres Atas -->
         <div class="progress-bars" id="progressBars"></div>
 
-        <!-- ISI SLIDE (Bisa ditambah/ubah teks & fotonya) -->
+        <!-- ISI SLIDE -->
         <div class="slide current">
             <div class="slide-emoji">🎂</div>
             <h2>Selamat Ulang Tahun!</h2>
@@ -105,9 +111,8 @@
         </div>
 
         <div class="slide">
-            <!-- Ganti teks src dengan link foto istri Anda jika ada -->
-            <img class="slide-img" src="WhatsApp Image 2026-05-15 at 02.31.47.jpeghh4x5PA/" alt="Foto">
-            <h2>Bidadari Surgaku ✨</h2>
+            <div class="slide-emoji">✨</div>
+            <h2>Bidadari Surgaku</h2>
             <p>Terima kasih sudah menjadi istri yang penyabar, ibu yang luar biasa, dan sandaran terbaik dalam suka maupun duka.</p>
             <div class="hint">Sentuh layar untuk lanjut...</div>
         </div>
@@ -137,8 +142,9 @@
         let currentIdx = 0;
         const slides = document.querySelectorAll('.slide');
         const totalSlides = slides.length;
+        const music = document.getElementById('romanticMusic');
 
-        // Membuat bar indikator atas otomatis sesuai jumlah slide
+        // Membuat bar indikator atas otomatis
         const pbContainer = document.getElementById('progressBars');
         for (let i = 0; i < totalSlides; i++) {
             const bar = document.createElement('div');
@@ -152,19 +158,27 @@
         const fills = document.querySelectorAll('.bar-fill');
 
         function mulaiStory() {
+            // Putar musik romantis
+            music.play().catch(error => {
+                console.log("Playback dicegah oleh browser, akan dicoba lagi saat ketukan berikutnya.");
+            });
+
             document.getElementById('giftBox').classList.add('hidden');
             document.getElementById('storyContainer').classList.remove('hidden');
             updateBars();
         }
 
         function nextSlide() {
+            // Memastikan musik tetap berputar jika sebelumnya terblokir browser
+            if (music.paused) { music.play(); }
+
             if (currentIdx < totalSlides - 1) {
                 slides[currentIdx].classList.remove('current');
                 currentIdx++;
                 slides[currentIdx].classList.add('current');
                 updateBars();
             } else {
-                // Jika sudah slide terakhir, balik ke slide pertama
+                // Kembali ke slide awal jika sudah selesai
                 slides[currentIdx].classList.remove('current');
                 currentIdx = 0;
                 slides[currentIdx].classList.add('current');
